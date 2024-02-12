@@ -41,7 +41,7 @@ void	*pthread(void *void_philo)
 	if (rules->nb_philo == 1)
 		return (NULL);
 	if (phi->id % 2)
-		usleep(rules->time_eat - 100);
+		usleep(rules->time_eat - (rules->time_eat / 4));
 	while (!(rules->dieded))
 	{
 		eatPhilo(phi);
