@@ -6,7 +6,7 @@
 /*   By: nathan <nathan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:29:39 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/12 14:24:10 by nathan           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:19:35 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	*pthread(void *void_philo)
 	
 	phi = (void *)void_philo;
 	rules = phi->rules;
+	if (rules->nb_philo == 1)
+		return (NULL);
 	if (phi->id % 2)
 		usleep(rules->time_eat - 100);
 	while (!(rules->dieded))
