@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   launcher.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nathan <nathan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:29:39 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/12 15:19:35 by nathan           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:12:05 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	eatPhilo(t_philo *philo)
+static void	eat_philo(t_philo *philo)
 {
-	t_rules *rules;
-	
+	t_rules	*rules;
+
 	rules = philo->rules;
 	pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
-	actionPrint(rules, philo->id, "has taken a fork");
+	action_print(rules, philo->id, "has taken a fork");
 	pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
-	actionPrint(rules, philo->id, "has taken a fork");
+	action_print(rules, philo->id, "has taken a fork");
 	pthread_mutex_lock(&(rules->meal_check));
-	actionPrint(rules, philo->id, "is eating");
+	action_print(rules, philo->id, "is eating");
 	philo->t_last_meal = timestamp();
 	pthread_mutex_unlock(&(rules->meal_check));
-	smartSleep(rules->time_eat, rules);
+	smart_sleep(rules->time_eat, rules);
 	(philo->x_ate)++;
 	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
 	pthread_mutex_unlock(&(rules->forks[philo->right_fork_id]));
 }
 
-void	*pthread(void *void_philo)
+static void	*pthread(void *void_philo)
 {
-	t_philo *phi;
-	t_rules *rules;
-	
+	t_philo	*phi;
+	t_rules	*rules;
+
 	phi = (void *)void_philo;
 	rules = phi->rules;
 	if (rules->nb_philo == 1)
@@ -44,17 +44,17 @@ void	*pthread(void *void_philo)
 		usleep(rules->time_eat - (rules->time_eat / 4));
 	while (!(rules->dieded))
 	{
-		eatPhilo(phi);
+		eat_philo(phi);
 		if (rules->all_ate)
 			break ;
-		actionPrint(rules, phi->id, "is sleeping");
-		smartSleep(rules->time_sleep, rules);
-		actionPrint(rules, phi->id, "is thinking");
+		action_print(rules, phi->id, "is sleeping");
+		smart_sleep(rules->time_sleep, rules);
+		action_print(rules, phi->id, "is thinking");
 	}
 	return (NULL);
 }
 
-void	deathCheck(t_rules *r, t_philo *p)
+static void	death_check(t_rules *r, t_philo *p)
 {
 	int	i;
 
@@ -64,9 +64,9 @@ void	deathCheck(t_rules *r, t_philo *p)
 		while (++i < r->nb_philo && !(r->dieded))
 		{
 			pthread_mutex_lock(&(r->meal_check));
-			if (timeDiff(timestamp(), p[i].t_last_meal) > r->time_death)
+			if (time_diff(timestamp(), p[i].t_last_meal) > r->time_death)
 			{
-				actionPrint(r, i, "died");
+				action_print(r, i, "died");
 				r->dieded = 1;
 			}
 			pthread_mutex_unlock(&(r->meal_check));
@@ -81,7 +81,7 @@ void	deathCheck(t_rules *r, t_philo *p)
 	}
 }
 
-void	exitLauncher(t_rules *rules, t_philo *philo)
+static void	exit_launcher(t_rules *rules, t_philo *philo)
 {
 	int	i;
 
@@ -95,7 +95,7 @@ void	exitLauncher(t_rules *rules, t_philo *philo)
 	pthread_mutex_destroy(&(rules->writing));
 }
 
-int launcher(t_rules *rules)
+int	launcher(t_rules *rules)
 {
 	t_philo	*phi;
 	int		i;
@@ -110,7 +110,7 @@ int launcher(t_rules *rules)
 		phi[i].t_last_meal = timestamp();
 		i++;
 	}
-	deathCheck(rules, phi);
-	exitLauncher(rules, phi);
+	death_check(rules, phi);
+	exit_launcher(rules, phi);
 	return (0);
 }

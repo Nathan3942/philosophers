@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nathan <nathan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:44:23 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/12 11:56:45 by nathan           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:08:23 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int	initPhilo(t_rules *rules)
+static int	init_philo(t_rules *rules)
 {
 	int	i;
 
@@ -29,7 +29,7 @@ static int	initPhilo(t_rules *rules)
 	return (0);
 }
 
-static int	initMutex(t_rules *rules)
+static int	init_mutex(t_rules *rules)
 {
 	int	i;
 
@@ -46,13 +46,13 @@ static int	initMutex(t_rules *rules)
 	return (0);
 }
 
-int initAll(t_rules *rules, char **argv)
+int	init_all(t_rules *rules, char **argv)
 {
 	rules->nb_philo = ft_atoi(argv[1]);
 	rules->time_death = ft_atoi(argv[2]);
 	rules->time_eat = ft_atoi(argv[3]);
 	rules->time_sleep = ft_atoi(argv[4]);
-	if (rules->nb_philo < 2 || rules->time_death < 0 || rules->time_eat < 0
+	if (rules->nb_philo < 1 || rules->time_death < 0 || rules->time_eat < 0
 		|| rules->time_sleep < 0 || rules->nb_philo > 250)
 		return (1);
 	if (argv[5])
@@ -63,8 +63,8 @@ int initAll(t_rules *rules, char **argv)
 	}
 	else
 		rules->nb_eat = -1;
-	if (initMutex(rules))
+	if (init_mutex(rules))
 		return (2);
-	initPhilo(rules);
+	init_philo(rules);
 	return (0);
 }

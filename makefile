@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nathan <nathan@student.42.fr>              +#+  +:+       +#+         #
+#    By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 12:51:08 by nathan            #+#    #+#              #
-#    Updated: 2024/02/07 13:31:31 by nathan           ###   ########.fr        #
+#    Updated: 2024/02/13 14:48:36 by njeanbou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,16 @@ OBJS = ${SRCS:.c=.o}
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -lpthread
+CFLAGS = -Wall -Wextra -Werror
+
+LDFLAGS = -lpthread
 
 RM = rm -rf
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME} ${LDFLAGS}
 
 clean:
 	${RM} ${OBJS}

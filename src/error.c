@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nathan <nathan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 15:23:11 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/07 15:24:26 by nathan           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:07:48 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	writeError(char *str)
+int	write_error(char *str)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (str[len])
@@ -25,11 +25,11 @@ int	writeError(char *str)
 	return (1);
 }
 
-int	errorManager(int error)
+int	error_manager(int error)
 {
 	if (error == 1)
-		return (writeError("Wrong argument"));
+		return (write_error("Wrong argument"));
 	else if (error == 2)
-		return (writeError("Initializing mutex"));
+		return (write_error("Initializing mutex"));
 	return (1);
 }

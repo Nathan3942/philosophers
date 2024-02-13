@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nathan <nathan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:29:53 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/12 14:23:30 by nathan           ###   ########.fr       */
+/*   Updated: 2024/02/13 15:10:28 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int			ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	long int	n;
 	int			sign;
@@ -38,17 +38,17 @@ int			ft_atoi(const char *str)
 long long	timestamp(void)
 {
 	struct timeval	t;
-	
+
 	gettimeofday(&t, NULL);
 	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
 }
 
-long long	timeDiff(long long pres, long long past)
+long long	time_diff(long long pres, long long past)
 {
 	return (pres - past);
 }
 
-void	actionPrint(t_rules *rules, int id, char *str)
+void	action_print(t_rules *rules, int id, char *str)
 {
 	pthread_mutex_lock(&(rules->writing));
 	if (!(rules->dieded))
@@ -61,14 +61,14 @@ void	actionPrint(t_rules *rules, int id, char *str)
 	return ;
 }
 
-void	smartSleep(long long time, t_rules *rules)
+void	smart_sleep(long long time, t_rules *rules)
 {
 	long long	i;
 
 	i = timestamp();
 	while (!(rules->dieded))
 	{
-		if (timeDiff(timestamp(), i) >= time)
+		if (time_diff(timestamp(), i) >= time)
 			break ;
 		usleep(50);
 	}
