@@ -6,7 +6,7 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:29:39 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/13 15:12:05 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/02/13 15:49:41 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	*pthread(void *void_philo)
 	while (!(rules->dieded))
 	{
 		eat_philo(phi);
-		if (rules->all_ate)
+		if ((phi->x_ate >= rules->nb_eat && rules->nb_eat != -1)
+			|| rules->all_ate)
 			break ;
 		action_print(rules, phi->id, "is sleeping");
 		smart_sleep(rules->time_sleep, rules);
@@ -58,10 +59,10 @@ static void	death_check(t_rules *r, t_philo *p)
 {
 	int	i;
 
-	while (!(r->all_ate))
+	while (!(r->all_ate) && !(r->dieded))
 	{
 		i = -1;
-		while (++i < r->nb_philo && !(r->dieded))
+		while (++i < r->nb_philo)
 		{
 			pthread_mutex_lock(&(r->meal_check));
 			if (time_diff(timestamp(), p[i].t_last_meal) > r->time_death)
