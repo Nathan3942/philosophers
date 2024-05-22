@@ -6,21 +6,29 @@
 /*   By: njeanbou <njeanbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:29:39 by nathan            #+#    #+#             */
-/*   Updated: 2024/02/13 15:49:41 by njeanbou         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:49:20 by njeanbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static void	eat_philo(t_philo *philo)
+static void	eat_philo(t_philo *philo, t_rules *rules)
 {
-	t_rules	*rules;
-
-	rules = philo->rules;
-	pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
-	action_print(rules, philo->id, "has taken a fork");
-	pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
-	action_print(rules, philo->id, "has taken a fork");
+	if (philo->id % 2 == 0)
+	{
+		usleep(rules->time_eat);
+		pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
+		action_print(rules, philo->id, "has taken a fork");
+		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+		action_print(rules, philo->id, "has taken a fork");
+	}
+	else
+	{
+		pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+		action_print(rules, philo->id, "has taken a fork");
+		pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
+		action_print(rules, philo->id, "has taken a fork");
+	}
 	pthread_mutex_lock(&(rules->meal_check));
 	action_print(rules, philo->id, "is eating");
 	philo->t_last_meal = timestamp();
@@ -40,11 +48,11 @@ static void	*pthread(void *void_philo)
 	rules = phi->rules;
 	if (rules->nb_philo == 1)
 		return (NULL);
-	if (phi->id % 2)
-		usleep(rules->time_eat - (rules->time_eat / 4));
+	if (phi->id % 2 == 0)
+		usleep(rules->time_eat);
 	while (!(rules->dieded))
 	{
-		eat_philo(phi);
+		eat_philo(phi, rules);
 		if ((phi->x_ate >= rules->nb_eat && rules->nb_eat != -1)
 			|| rules->all_ate)
 			break ;
